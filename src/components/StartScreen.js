@@ -1,4 +1,4 @@
-function StartScreen({ numQuestions, dispatch }) {
+function StartScreen({ numQuestions, dispatch, difficulty }) {
   function handleDifficulty(e) {
     const difficulty = e.target.value;
 
@@ -24,7 +24,16 @@ function StartScreen({ numQuestions, dispatch }) {
         <h3>{numQuestions} questions to test your React mastery</h3>
       </div>
       <footer className="footer">
-        <select className="select-difficulty" onChange={handleDifficulty}>
+        <select
+          className={`select-difficulty ${
+            difficulty === "easy"
+              ? "easy"
+              : difficulty === "normal"
+              ? "normal"
+              : "difficult"
+          }`}
+          onChange={handleDifficulty}
+        >
           <option value={"easy"}>Easy</option>
           <option value={"normal"}>Normal</option>
           <option value={"difficult"}>Difficult</option>

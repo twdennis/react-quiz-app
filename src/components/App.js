@@ -15,6 +15,7 @@ import Timer from "./Timer";
 const SECONDS_PER_QUESTION = 30;
 
 const initialState = {
+  difficulty: "easy",
   questions: [],
   filteredQuestions: [],
   status: "loading",
@@ -43,16 +44,19 @@ function reducer(state, action) {
       return {
         ...state,
         filteredQuestions: state.questions.filter((q) => q.points === 10),
+        difficulty: "easy",
       };
     case "normal":
       return {
         ...state,
         filteredQuestions: state.questions.filter((q) => q.points < 30),
+        difficulty: "normal",
       };
     case "difficult":
       return {
         ...state,
         filteredQuestions: state.questions,
+        difficulty: "difficult",
       };
     case "start":
       return {
@@ -84,6 +88,7 @@ function reducer(state, action) {
         ...initialState,
         highScore: state.highScore,
         questions: state.questions,
+        filteredQuestions: state.questions.filter((q) => q.points === 10),
         status: "ready",
       };
     case "countDown":
@@ -107,6 +112,7 @@ export default function App() {
       points,
       highScore,
       secsRemaining,
+      difficulty,
     },
     dispatch,
   ] = useReducer(reducer, initialState);
@@ -131,7 +137,11 @@ export default function App() {
         {status === "loading" && <Loader />}
         {status === "error" && <Error />}
         {status === "ready" && (
-          <StartScreen numQuestions={numQuestions} dispatch={dispatch} />
+          <StartScreen
+            numQuestions={numQuestions}
+            dispatch={dispatch}
+            difficulty={difficulty}
+          />
         )}
         {status === "active" && (
           <>
