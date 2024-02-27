@@ -16,6 +16,7 @@ const SECONDS_PER_QUESTION = 30;
 
 const initialState = {
   questions: [],
+  filteredQuestions: [],
   status: "loading",
   index: 0,
   answer: null,
@@ -30,6 +31,7 @@ function reducer(state, action) {
       return {
         ...state,
         questions: action.payload,
+        filteredQuestions: action.payload.filter((q) => q.points === 10),
         status: "ready",
       };
     case "dataFailed":
@@ -37,14 +39,29 @@ function reducer(state, action) {
         ...state,
         status: "error",
       };
+    case "easy":
+      return {
+        ...state,
+        filteredQuestions: state.questions.filter((q) => q.points === 10),
+      };
+    case "normal":
+      return {
+        ...state,
+        filteredQuestions: state.questions.filter((q) => q.points < 30),
+      };
+    case "difficult":
+      return {
+        ...state,
+        filteredQuestions: state.questions,
+      };
     case "start":
       return {
         ...state,
         status: "active",
-        secsRemaining: state.questions.length * SECONDS_PER_QUESTION,
+        secsRemaining: state.filteredQuestions.length * SECONDS_PER_QUESTION,
       };
     case "newAnswer":
-      const question = state.questions.at(state.index);
+      const question = state.filteredQuestions.at(state.index);
       return {
         ...state,
         answer: action.payload,
@@ -82,12 +99,20 @@ function reducer(state, action) {
 
 export default function App() {
   const [
-    { questions, status, index, answer, points, highScore, secsRemaining },
+    {
+      filteredQuestions,
+      status,
+      index,
+      answer,
+      points,
+      highScore,
+      secsRemaining,
+    },
     dispatch,
   ] = useReducer(reducer, initialState);
 
-  const numQuestions = questions.length;
-  const maxPossiblePoints = questions.reduce(
+  const numQuestions = filteredQuestions.length;
+  const maxPossiblePoints = filteredQuestions.reduce(
     (prev, cur) => prev + cur.points,
     0
   );
@@ -118,7 +143,7 @@ export default function App() {
               answer={answer}
             />
             <Question
-              question={questions[index]}
+              question={filteredQuestions[index]}
               dispatch={dispatch}
               answer={answer}
             />

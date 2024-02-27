@@ -89,6 +89,25 @@ h4 {
   align-items: center;
 }
 
+.footer {
+  display: flex;
+  justify-content:space-around
+}
+
+.select-difficulty {
+  color: inherit;
+  font-size: 2rem;
+  border: 2px solid var(--color-dark);
+  background-color: var(--color-dark);
+  padding: 1.2rem 2.4rem;
+  transition: 0.3s;
+  border-radius: 100px;
+}
+
+.select-difficulty:hover {
+  background-color: var(--color-darkest);
+}
+
 .progress {
   margin-bottom: 4rem;
   display: grid;
@@ -113,7 +132,7 @@ progress {
 ::-webkit-progress-value {
   background-color: var(--color-theme);
   border-radius: 100px;
-  transition: all 0.35s
+  transition: all 0.35s;
 }
 
 .btn {
