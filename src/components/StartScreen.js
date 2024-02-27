@@ -1,21 +1,7 @@
-function StartScreen({ numQuestions, dispatch, difficulty }) {
-  function handleDifficulty(e) {
-    const difficulty = e.target.value;
+import DifficultySelect from "./DifficultySelect";
 
-    switch (difficulty) {
-      case "easy":
-        dispatch({ type: "easy" });
-        break;
-      case "normal":
-        dispatch({ type: "normal" });
-        break;
-      case "difficult":
-        dispatch({ type: "difficult" });
-        break;
-      default:
-        throw new Error("Action unknown");
-    }
-  }
+function StartScreen({ numQuestions, dispatch, difficulty }) {
+
 
   return (
     <>
@@ -24,20 +10,7 @@ function StartScreen({ numQuestions, dispatch, difficulty }) {
         <h3>{numQuestions} questions to test your React mastery</h3>
       </div>
       <footer className="footer">
-        <select
-          className={`select-difficulty ${
-            difficulty === "easy"
-              ? "easy"
-              : difficulty === "normal"
-              ? "normal"
-              : "difficult"
-          }`}
-          onChange={handleDifficulty}
-        >
-          <option value={"easy"}>Easy</option>
-          <option value={"normal"}>Normal</option>
-          <option value={"difficult"}>Difficult</option>
-        </select>
+        <DifficultySelect difficulty={difficulty} dispatch={dispatch}/>
         <button
           className="btn btn-ui"
           onClick={() => dispatch({ type: "start" })}
