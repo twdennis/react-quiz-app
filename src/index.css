@@ -91,7 +91,7 @@ h4 {
 
 .footer {
   display: flex;
-  justify-content:space-around
+  justify-content: space-around;
 }
 
 .select-difficulty {
@@ -102,10 +102,26 @@ h4 {
   padding: 1.2rem 2.4rem;
   transition: 0.3s;
   border-radius: 100px;
+  cursor: pointer;
+}
+
+.easy {
+  border: 2px solid green;
+  background-color: green;
+}
+
+.normal {
+  border: 2px solid orange;
+  background-color: orange;
+}
+
+.difficult {
+  border: 2px solid red;
+  background-color: red;
 }
 
 .select-difficulty:hover {
-  background-color: var(--color-darkest);
+  transform: scale(1.05);
 }
 
 .progress {
