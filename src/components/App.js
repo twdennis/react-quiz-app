@@ -12,7 +12,7 @@ import FinishScreen from "./FinishScreen";
 import Footer from "./Footer";
 import Timer from "./Timer";
 
-const SECONDS_PER_QUESTION = 30;
+const SECONDS_PER_QUESTION = 20;
 
 const initialState = {
   difficulty: "easy",
@@ -32,7 +32,7 @@ function reducer(state, action) {
       return {
         ...state,
         questions: action.payload,
-        filteredQuestions: action.payload.filter((q) => q.points === 10),
+        filteredQuestions: action.payload,
         status: "ready",
       };
     case "dataFailed":

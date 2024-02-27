@@ -1,6 +1,13 @@
-function DifficultySelect({ difficulty, dispatch }) {
+function DifficultySelect({
+  difficulty,
+  dispatch,
+  difficultySelected,
+  setDifficultySelected,
+}) {
   function handleDifficulty(e) {
     const difficulty = e.target.value;
+
+    setDifficultySelected(true);
 
     switch (difficulty) {
       case "easy":
@@ -18,15 +25,21 @@ function DifficultySelect({ difficulty, dispatch }) {
   }
   return (
     <select
+      id="select-difficulty"
       className={`select-difficulty ${
-        difficulty === "easy"
+        difficulty === "easy" && difficultySelected
           ? "easy"
-          : difficulty === "normal"
+          : difficulty === "normal" && difficultySelected
           ? "normal"
-          : "difficult"
+          : difficulty === "difficult" && difficultySelected
+          ? "difficult"
+          : ""
       }`}
       onChange={handleDifficulty}
     >
+      <option value={""} disabled={difficultySelected}>
+        --Please select a difficulty--
+      </option>
       <option value={"easy"}>Easy</option>
       <option value={"normal"}>Normal</option>
       <option value={"difficult"}>Difficult</option>
