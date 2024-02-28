@@ -22,7 +22,7 @@ const initialState = {
   index: 0,
   answer: null,
   points: 0,
-  highScore: 0,
+  highScore: JSON.parse(localStorage.getItem("highscore")) ?? 0,
   secsRemaining: null,
 };
 
@@ -62,7 +62,7 @@ function reducer(state, action) {
       return {
         ...state,
         status: "active",
-        secsRemaining: state.filteredQuestions.length * SECONDS_PER_QUESTION,
+        secsRemaining: SECONDS_PER_QUESTION,
       };
     case "newAnswer":
       const question = state.filteredQuestions.at(state.index);
@@ -75,13 +75,22 @@ function reducer(state, action) {
             : state.points,
       };
     case "nextQuestion":
-      return { ...state, index: state.index + 1, answer: null };
+      return {
+        ...state,
+        index: state.index + 1,
+        answer: null,
+        secsRemaining: SECONDS_PER_QUESTION,
+      };
     case "finish":
+      const highscore =
+        state.points > state.highScore ? state.points : state.highScore;
+
+      localStorage.setItem("highscore", JSON.stringify(highscore));
+
       return {
         ...state,
         status: "finished",
-        highScore:
-          state.points > state.highScore ? state.points : state.highScore,
+        highScore: highscore,
       };
     case "restart":
       return {
@@ -145,6 +154,7 @@ export default function App() {
             numQuestions={numQuestions}
             dispatch={dispatch}
             difficulty={difficulty}
+            highScore={highScore}
           />
         )}
         {status === "active" && (
