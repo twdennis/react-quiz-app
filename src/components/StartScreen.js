@@ -1,7 +1,7 @@
 import { useState } from "react";
 import DifficultySelect from "./DifficultySelect";
 
-function StartScreen({ numQuestions, dispatch, difficulty }) {
+function StartScreen({ numQuestions, dispatch, difficulty, highScore }) {
   const [difficultySelected, setDifficultySelected] = useState(false);
 
   return (
@@ -30,6 +30,7 @@ function StartScreen({ numQuestions, dispatch, difficulty }) {
           </button>
         )}
       </footer>
+      <p className="highscore highscore-start">Score to beat: {highScore}</p>
     </>
   );
 }
