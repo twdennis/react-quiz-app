@@ -96,6 +96,10 @@ function reducer(state, action) {
         ...state,
         secsRemaining: state.secsRemaining - 1,
         status: state.secsRemaining === 0 ? "finished" : state.status,
+        highScore:
+          state.secsRemaining === 0
+            ? Math.max(state.points, state.highScore)
+            : state.highScore,
       };
     default:
       throw new Error("Action unknown");
