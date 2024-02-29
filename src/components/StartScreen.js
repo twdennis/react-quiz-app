@@ -21,16 +21,17 @@ function StartScreen({ numQuestions, dispatch, difficulty, highScore }) {
           difficultySelected={difficultySelected}
           setDifficultySelected={setDifficultySelected}
         />
-        {difficultySelected && (
-          <button
-            className="btn btn-ui"
-            onClick={() => dispatch({ type: "start" })}
-          >
-            Let's start
-          </button>
-        )}
+
+        <button
+          disabled={!difficultySelected}
+          style={!difficultySelected ? { color: "gray" } : null}
+          className="btn btn-ui"
+          onClick={() => dispatch({ type: "start" })}
+        >
+          Let's start
+        </button>
       </footer>
-      <p className="highscore highscore-start">Score to beat: {highScore}</p>
+      <p className="highscore highscore-start">Score to beat: <strong>{highScore}</strong></p>
     </>
   );
 }

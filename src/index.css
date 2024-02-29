@@ -172,12 +172,20 @@ progress {
   transform: translateX(1.2rem);
 }
 
+.btn[disabled] {
+  color: grey;
+}
+
 .btn[disabled]:hover {
   cursor: not-allowed;
 }
 
 .btn-ui {
   float: right;
+}
+
+.btn-prev {
+  float: center;
 }
 
 .options {
@@ -257,6 +265,10 @@ progress {
   border: 2px solid var(--color-dark);
   padding: 1.35rem 2.8rem;
   border-radius: 100px;
+}
+
+.finished-timer {
+  color: grey;
 }
 
 /* CREDIT: https://dev.to/afif/i-made-100-css-loaders-for-your-next-project-4eje */

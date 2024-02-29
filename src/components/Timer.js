@@ -1,19 +1,23 @@
 import { useEffect } from "react";
 
-function Timer({ dispatch, secsRemaining }) {
-  const minutes = Math.floor(secsRemaining / 60);
-  const seconds = secsRemaining % 60;
+function Timer({ dispatch, totalSeconds, hasAnswered }) {
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
   useEffect(
     function () {
-      const id = setInterval(function () {
-        dispatch({ type: "countDown" });
-      }, 1000);
-      return () => clearInterval(id);
+      if (!hasAnswered) {
+        const id = setInterval(function () {
+          dispatch({ type: "countDown" });
+        }, 1000);
+
+        return () => clearInterval(id);
+      }
     },
-    [dispatch]
+    [dispatch, hasAnswered]
   );
+
   return (
-    <div className="timer">
+    <div className={hasAnswered ? "timer finished-timer" : "timer"}>
       {minutes < 10 && "0"}
       {minutes}:{seconds < 10 && "0"}
       {seconds}

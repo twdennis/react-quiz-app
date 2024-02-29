@@ -11,8 +11,7 @@ import Progress from "./Progress";
 import FinishScreen from "./FinishScreen";
 import Footer from "./Footer";
 import Timer from "./Timer";
-
-const SECONDS_PER_QUESTION = 20;
+import PreviousButton from "./PreviousButton";
 
 const initialState = {
   difficulty: "easy",
@@ -21,12 +20,15 @@ const initialState = {
   status: "loading",
   index: 0,
   answer: null,
+  answers: [],
   points: 0,
   highScore: JSON.parse(localStorage.getItem("highscore")) ?? 0,
-  secsRemaining: null,
+  totalSeconds: null,
+  timeRemaining: {},
 };
 
 function reducer(state, action) {
+  const question = state.filteredQuestions.at(state.index);
   switch (action.type) {
     case "dataReceived":
       return {
@@ -59,13 +61,17 @@ function reducer(state, action) {
         difficulty: "difficult",
       };
     case "start":
+      const initialTime = question.points * 1.5;
       return {
         ...state,
         status: "active",
-        secsRemaining: SECONDS_PER_QUESTION,
+        totalSeconds: state.timeRemaining[state.index] || initialTime,
+        timeRemaining: {
+          ...state.timeRemaining,
+          [state.index]: state.timeRemaining[state.index] || initialTime,
+        },
       };
     case "newAnswer":
-      const question = state.filteredQuestions.at(state.index);
       return {
         ...state,
         answer: action.payload,
@@ -73,13 +79,43 @@ function reducer(state, action) {
           action.payload === question.correctOption
             ? state.points + question.points
             : state.points,
+        answers: [...state.answers, action.payload],
       };
-    case "nextQuestion":
+    case "prevQuestion":
+      const newIndex =
+        action.type === "nextQuestion"
+          ? Math.min(state.index + 1, state.filteredQuestions.length - 1)
+          : Math.max(0, state.index - 1);
+
+      const newTime =
+        state.timeRemaining[newIndex] ||
+        state.filteredQuestions[newIndex].points * 1.5;
+
+      // const index = state.index - 1 >= 0 ? state.index - 1 : state.index;
+
       return {
         ...state,
-        index: state.index + 1,
-        answer: null,
-        secsRemaining: SECONDS_PER_QUESTION,
+        index: newIndex,
+        totalSeconds: newTime,
+        timeRemaining: {
+          ...state.timeRemaining,
+          [state.index]: state.totalSeconds,
+          [newIndex]: newTime,
+        },
+        answer: state.answers.at(newIndex) ? state.answers.at(newIndex) : null,
+      };
+    case "nextQuestion":
+      const iterator =
+        state.index + 1 < state.filteredQuestions.length
+          ? state.index + 1
+          : state.index;
+
+      return {
+        ...state,
+        index: iterator,
+        answer: state.answers.at(iterator) ? state.answers.at(iterator) : null,
+        totalSeconds:
+          state.timeRemaining[state.index + 1] || question.points * 1.5,
       };
     case "finish":
       const highscore =
@@ -99,14 +135,21 @@ function reducer(state, action) {
         questions: state.questions,
         filteredQuestions: state.questions.filter((q) => q.points === 10),
         status: "ready",
+        answers: [],
       };
     case "countDown":
+      const updatedTotalSecs = Math.max(0, state.totalSeconds - 1);
+
       return {
         ...state,
-        secsRemaining: state.secsRemaining - 1,
-        status: state.secsRemaining === 0 ? "finished" : state.status,
+        totalSeconds: updatedTotalSecs,
+        timeRemaining: {
+          ...state.timeRemaining,
+          [state.index]: updatedTotalSecs,
+        },
+        status: state.totalSeconds === 0 ? "finished" : state.status,
         highScore:
-          state.secsRemaining === 0
+          state.totalSeconds === 0
             ? Math.max(state.points, state.highScore)
             : state.highScore,
       };
@@ -124,7 +167,7 @@ export default function App() {
       answer,
       points,
       highScore,
-      secsRemaining,
+      totalSeconds,
       difficulty,
     },
     dispatch,
@@ -135,6 +178,7 @@ export default function App() {
     (prev, cur) => prev + cur.points,
     0
   );
+  const hasAnswered = answer !== null;
 
   useEffect(function () {
     fetch("http://localhost:9000/questions")
@@ -170,15 +214,23 @@ export default function App() {
               question={filteredQuestions[index]}
               dispatch={dispatch}
               answer={answer}
+              hasAnswered={hasAnswered}
             />
             <Footer>
-              <NextButton
-                answer={answer}
-                dispatch={dispatch}
-                numQuestions={numQuestions}
-                index={index}
-              />
-              <Timer dispatch={dispatch} secsRemaining={secsRemaining} />
+              <>
+                <Timer
+                  dispatch={dispatch}
+                  totalSeconds={totalSeconds}
+                  hasAnswered={hasAnswered}
+                />
+                <PreviousButton index={index} dispatch={dispatch} />
+                <NextButton
+                  answer={answer}
+                  dispatch={dispatch}
+                  numQuestions={numQuestions}
+                  index={index}
+                />
+              </>
             </Footer>
           </>
         )}
