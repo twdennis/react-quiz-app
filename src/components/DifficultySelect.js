@@ -38,7 +38,7 @@ function DifficultySelect({
       onChange={handleDifficulty}
     >
       <option value={""} disabled={difficultySelected}>
-        --Please select a difficulty--
+        Select difficulty
       </option>
       <option value={"easy"}>Easy</option>
       <option value={"normal"}>Normal</option>

@@ -1,5 +1,4 @@
-function Options({ question, dispatch, answer }) {
-  const hasAnswered = answer !== null;
+function Options({ question, dispatch, answer, hasAnswered }) {
 
   return (
     <div className="options">
