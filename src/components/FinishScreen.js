@@ -1,3 +1,5 @@
+import RestartButton from "./RestartButton";
+
 function FinishScreen({ points, maxPossiblePoints, highScore, dispatch }) {
   const percentage = (points / maxPossiblePoints) * 100;
 
@@ -15,12 +17,7 @@ function FinishScreen({ points, maxPossiblePoints, highScore, dispatch }) {
         {maxPossiblePoints} ({Math.ceil(percentage)}%)
       </p>
       <p className="highscore">(Highscore: {highScore} points)</p>
-      <button
-        className="btn btn-ui"
-        onClick={() => dispatch({ type: "restart" })}
-      >
-        Restart
-      </button>
+      <RestartButton dispatch={dispatch} />
     </>
   );
 }
