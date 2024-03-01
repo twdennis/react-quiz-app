@@ -6,7 +6,7 @@ function PreviousButton({ dispatch, index }) {
       onClick={() => dispatch({ type: "prevQuestion" })}
       disabled={firstQuestion}
     >
-      Previous
+      ⬅︎
     </button>
   );
 }

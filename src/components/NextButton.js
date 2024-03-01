@@ -8,7 +8,7 @@ function NextButton({ answer, dispatch, index, numQuestions }) {
         onClick={() => dispatch({ type: "nextQuestion" })}
         disabled={noAnswer}
       >
-        Next
+        ➡︎
       </button>
     );
 
@@ -19,7 +19,7 @@ function NextButton({ answer, dispatch, index, numQuestions }) {
         onClick={() => dispatch({ type: "finish" })}
         disabled={noAnswer}
       >
-        Finish
+        🏁 Finish
       </button>
     );
 }

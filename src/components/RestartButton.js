@@ -4,7 +4,7 @@ function RestartButton({ dispatch }) {
       className="btn btn-ui"
       onClick={() => dispatch({ type: "restart" })}
     >
-      Restart
+      ↺ Restart
     </button>
   );
 }
