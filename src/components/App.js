@@ -12,6 +12,7 @@ import FinishScreen from "./FinishScreen";
 import Footer from "./Footer";
 import Timer from "./Timer";
 import PreviousButton from "./PreviousButton";
+import RestartButton from "./RestartButton";
 
 const initialState = {
   difficulty: "easy",
@@ -227,6 +228,7 @@ export default function App() {
                   hasAnswered={hasAnswered}
                 />
                 <PreviousButton index={index} dispatch={dispatch} />
+                <RestartButton dispatch={dispatch} />
                 <NextButton
                   answer={answer}
                   dispatch={dispatch}
