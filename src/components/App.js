@@ -82,40 +82,43 @@ function reducer(state, action) {
         answers: [...state.answers, action.payload],
       };
     case "prevQuestion":
-      const newIndex =
-        action.type === "nextQuestion"
-          ? Math.min(state.index + 1, state.filteredQuestions.length - 1)
-          : Math.max(0, state.index - 1);
+      const prevIndex = state.index - 1 >= 0 ? state.index - 1 : 0;
 
       const newTime =
-        state.timeRemaining[newIndex] ||
-        state.filteredQuestions[newIndex].points * 1.5;
+        state.timeRemaining[prevIndex] ||
+        state.filteredQuestions[prevIndex].points * 1.5;
 
       // const index = state.index - 1 >= 0 ? state.index - 1 : state.index;
 
       return {
         ...state,
-        index: newIndex,
+        index: prevIndex,
         totalSeconds: newTime,
         timeRemaining: {
           ...state.timeRemaining,
           [state.index]: state.totalSeconds,
-          [newIndex]: newTime,
+          [prevIndex]: newTime,
         },
-        answer: state.answers.at(newIndex) ? state.answers.at(newIndex) : null,
+        answer:
+          state.answers.at(prevIndex) !== undefined
+            ? state.answers.at(prevIndex)
+            : null,
       };
+
     case "nextQuestion":
-      const iterator =
+      const nextIndex =
         state.index + 1 < state.filteredQuestions.length
           ? state.index + 1
           : state.index;
 
       return {
         ...state,
-        index: iterator,
-        answer: state.answers.at(iterator) ? state.answers.at(iterator) : null,
-        totalSeconds:
-          state.timeRemaining[state.index + 1] || question.points * 1.5,
+        index: nextIndex,
+        answer:
+          state.answers.at(nextIndex) !== undefined
+            ? state.answers.at(nextIndex)
+            : null,
+        totalSeconds: state.timeRemaining[nextIndex] || question.points * 1.5,
       };
     case "finish":
       const highscore =
