@@ -1,4 +1,8 @@
-function NextButton({ answer, dispatch, index, numQuestions }) {
+import { useQuiz } from "../hooks/useQuiz";
+
+function NextButton() {
+  const { answer, dispatch, index, numQuestions } = useQuiz();
+
   const noAnswer = answer === null;
 
   if (index < numQuestions - 1)

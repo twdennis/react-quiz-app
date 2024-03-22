@@ -1,8 +1,8 @@
-import { useState } from "react";
 import DifficultySelect from "./DifficultySelect";
+import { useQuiz } from "../hooks/useQuiz";
 
-function StartScreen({ numQuestions, dispatch, difficulty, highScore }) {
-  const [difficultySelected, setDifficultySelected] = useState(false);
+function StartScreen() {
+  const { difficultySelected, numQuestions, dispatch, highScore } = useQuiz();
 
   return (
     <>
@@ -15,12 +15,7 @@ function StartScreen({ numQuestions, dispatch, difficulty, highScore }) {
         )}
       </div>
       <footer className="footer">
-        <DifficultySelect
-          difficulty={difficulty}
-          dispatch={dispatch}
-          difficultySelected={difficultySelected}
-          setDifficultySelected={setDifficultySelected}
-        />
+        <DifficultySelect />
 
         <button
           disabled={!difficultySelected}
@@ -31,7 +26,9 @@ function StartScreen({ numQuestions, dispatch, difficulty, highScore }) {
           Let's start
         </button>
       </footer>
-      <p className="highscore highscore-start">Score to beat: <strong>{highScore}</strong></p>
+      <p className="highscore highscore-start">
+        Score to beat: <strong>{highScore}</strong>
+      </p>
     </>
   );
 }
