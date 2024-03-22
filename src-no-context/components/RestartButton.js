@@ -1,8 +1,4 @@
-import { useQuiz } from "../hooks/useQuiz";
-
-function RestartButton() {
-  const { dispatch } = useQuiz();
-
+function RestartButton({ dispatch }) {
   function handleRestart() {
     const confirmRestart = window.confirm("Are you sure you want to restart?");
 

@@ -1,11 +1,13 @@
-import { useQuiz } from "../hooks/useQuiz";
-
-function DifficultySelect() {
-  const { dispatch, difficulty, difficultySelected } = useQuiz();
-
+function DifficultySelect({
+  difficulty,
+  dispatch,
+  difficultySelected,
+  setDifficultySelected,
+}) {
   function handleDifficulty(e) {
     const difficulty = e.target.value;
-    dispatch({ type: "difficultySelected", payload: true });
+
+    setDifficultySelected(true);
 
     switch (difficulty) {
       case "easy":

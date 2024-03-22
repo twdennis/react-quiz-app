@@ -1,8 +1,6 @@
-import { useQuiz } from "../hooks/useQuiz";
 import RestartButton from "./RestartButton";
 
-function FinishScreen() {
-  const { points, maxPossiblePoints, highScore, dispatch } = useQuiz();
+function FinishScreen({ points, maxPossiblePoints, highScore, dispatch }) {
   const percentage = (points / maxPossiblePoints) * 100;
 
   let emoji;

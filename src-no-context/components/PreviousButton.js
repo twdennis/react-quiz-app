@@ -1,7 +1,4 @@
-import { useQuiz } from "../hooks/useQuiz";
-
-function PreviousButton() {
-  const { dispatch, index } = useQuiz();
+function PreviousButton({ dispatch, index }) {
   const firstQuestion = index === 0;
   return (
     <button
