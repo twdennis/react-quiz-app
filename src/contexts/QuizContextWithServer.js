@@ -1,4 +1,4 @@
-import { createContext, useEffect, useMemo, useReducer } from "react";
+import { createContext, useEffect, useReducer } from "react";
 
 const QuizContext = createContext();
 
@@ -23,8 +23,8 @@ function reducer(state, action) {
     case "dataReceived":
       return {
         ...state,
-        questions: action.payload.questions,
-        filteredQuestions: action.payload.questions,
+        questions: action.payload,
+        filteredQuestions: action.payload,
         status: "ready",
       };
     case "dataFailed":
@@ -172,22 +172,20 @@ function QuizProvider({ children }) {
     dispatch,
   ] = useReducer(reducer, initialState);
 
-  useEffect(function () {
-    fetch("/data/questions.json")
-      .then((res) => res.json())
-      .then((data) => {
-        dispatch({ type: "dataReceived", payload: data });
-      })
-      .catch((err) => dispatch({ type: "dataFailed" }));
-  }, []);
-
   const numQuestions = filteredQuestions.length;
-  const maxPossiblePoints = useMemo(() => {
-    return filteredQuestions.reduce((prev, cur) => prev + cur.points, 0);
-  }, [filteredQuestions]);
-
+  const maxPossiblePoints = filteredQuestions.reduce(
+    (prev, cur) => prev + cur.points,
+    0
+  );
   const hasAnswered = answer !== null;
   const question = filteredQuestions[index];
+
+  useEffect(function () {
+    fetch("http://localhost:9000/questions")
+      .then((res) => res.json())
+      .then((data) => dispatch({ type: "dataReceived", payload: data }))
+      .catch((err) => dispatch({ type: "dataFailed" }));
+  }, []);
 
   return (
     <QuizContext.Provider
